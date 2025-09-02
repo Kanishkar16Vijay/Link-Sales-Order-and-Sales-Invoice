@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-02 11:33:22.268295",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "customer",
+  "section_break_ugcm",
+  "unlinked_sales_order",
+  "column_break_vyze",
+  "unlinked_sales_invoice"
+ ],
+ "fields": [
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "section_break_ugcm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "unlinked_sales_order",
+   "fieldtype": "Table",
+   "label": "Unlinked Sales Order",
+   "options": "Unlinked Sales Order"
+  },
+  {
+   "fieldname": "column_break_vyze",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "unlinked_sales_invoice",
+   "fieldtype": "Table",
+   "label": "Unlinked Sales Invoice",
+   "options": "Unlinked Sales Invoice"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-09-02 11:35:23.048007",
+ "modified_by": "Administrator",
+ "module": "Saleslink",
+ "name": "Link Sales Order and Invoice",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
