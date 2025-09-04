@@ -15,8 +15,8 @@ def link_so_si(sales_order, sales_invoice, link_name) :
 
         if flag :
             for item1, item2 in zip(so.items, si.items) :
-                    frappe.db.set_value("Sales Invoice Item", item2.name, "sales_order", so.name)
-                    frappe.db.set_value("Sales Invoice Item", item2.name, "so_detail", item1.name)
+                frappe.db.set_value("Sales Invoice Item", item2.name, "sales_order", so.name)
+                frappe.db.set_value("Sales Invoice Item", item2.name, "so_detail", item1.name)
             frappe.db.set_value("Sales Order Invoice Link Request", link_name, "status", "Approved")
             frappe.db.set_value("Sales Order Invoice Link Request", link_name, "approved_by", frappe.session.user)
 
