@@ -10,6 +10,10 @@ frappe.ui.form.on("Link Sales Order and Invoice", {
                 frappe.msgprint("Please select at least one Sales Order and one Sales Invoice");
                 return;
             }
+            if (checked_so.length > 1 || checked_si.length > 1) {
+                frappe.msgprint("Please select only one Sales Order and one Sales Invoice");
+                return;
+            }
 
             so = checked_so.map(r => r.sales_order)
             si = checked_si.map(r => r.sales_invoice)
