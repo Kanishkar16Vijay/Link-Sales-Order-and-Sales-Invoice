@@ -1,16 +1,36 @@
 import frappe
 
 @frappe.whitelist()
-def link_so_si(docname, sales_order, sales_invoice) :
-    sales_order = sales_order[2:-2]
-    sales_invoice = sales_invoice[2:-2]
+def link_so_si(sales_order, sales_invoice, link_name) :
+
     so = frappe.get_doc("Sales Order", sales_order)
     si = frappe.get_doc("Sales Invoice", sales_invoice)
-    for itm1,itm2 in zip(so.items, si.items) :
-        if itm1.item_code == itm2.item_code and itm1.qty == itm2.qty and itm1.rate == itm2.rate :
-            frappe.db.set_value("Sales Invoice Item", itm2.name, "sales_order", so.name)
-            frappe.db.set_value("Sales Invoice Item", itm2.name, "so_detail", itm1.name)
-            # frappe.db.commit()
-            frappe.msgprint("Sales Order linked to Sales Invoice")
+    flag = True
+
+    if len(so.items) == len(si.items) :
+        for item1, item2 in zip(so.items, si.items) :
+            if item1.item_code != item2.item_code or item1.qty != item2.qty or so.grand_total != si.grand_total :
+                flag = False
+                break
+
+        if flag :
+            for item1, item2 in zip(so.items, si.items) :
+                if item1.item_code == item2.item_code and item1.qty == item2.qty and so.grand_total == si.grand_total :
+                    frappe.db.set_value("Sales Invoice Item", item2.name, "sales_order", so.name)
+                    frappe.db.set_value("Sales Invoice Item", item2.name, "so_detail", item1.name)
+                    frappe.db.set_value("Sales Order Invoice Link Request", link_name, "status", "Approved")
+                    frappe.db.set_value("Sales Order Invoice Link Request", link_name, "approved_by", frappe.session.user)
+
+                    frappe.msgprint("Sales Order and Sales Invoice Linked Successfully")
         else :
-            frappe.msgprint("Item details does not match")
+            frappe.db.set_value("Sales Order Invoice Link Request", link_name, "status", "Rejected")
+            frappe.db.set_value("Sales Order Invoice Link Request", link_name, "approved_by", frappe.session.user)
+            frappe.db.set_value("Sales Order Invoice Link Request", link_name, "reason", "Item details does not match with sales order")
+
+            frappe.msgprint("Sales Order and Sales Invoice Item details or Grand Total does not match")
+    else :
+        frappe.db.set_value("Sales Order Invoice Link Request", link_name, "status", "Rejected")
+        frappe.db.set_value("Sales Order Invoice Link Request", link_name, "approved_by", frappe.session.user)
+        frappe.db.set_value("Sales Order Invoice Link Request", link_name, "reason", "Item details does not match with sales order")
+
+        frappe.msgprint("Sales Order and Sales Invoice Item details or Grand Total does not match")
