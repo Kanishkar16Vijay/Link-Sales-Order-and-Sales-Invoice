@@ -26,7 +26,7 @@ frappe.ui.form.on("Link Sales Order and Invoice", {
                         customer: frm.doc.customer,
                         sales_order: so[0],
                         sales_invoice: si[0],
-                        status: ["in", ["Pending", "Rejected"]]
+                        status: ["in", ["Pending", "Rejected", "Approved"]]
                     },
                     fields: ["name", "status"]
                 },
